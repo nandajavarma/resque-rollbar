@@ -1,4 +1,4 @@
-describe Resque::Failure::Rollbar do
+describe Resque::Failure::RollBar do
   it "notifies" do
     exception = StandardError.new("BOOM")
     worker = Resque::Worker.new(:test)
@@ -6,9 +6,9 @@ describe Resque::Failure::Rollbar do
     payload = {'class' => Object, 'args' => 66}
 
     ::Rollbar = mock("rollbar")
-    ::Rollbar.should_receive(:report_exception).with(exception, payload)
+    ::Rollbar.should_receive(:report_exception).with(exception, payload, nil, :critical)
 
-    backend = Resque::Failure::Rollbar.new(exception, worker, queue, payload)
+    backend = Resque::Failure::RollBar.new(exception, worker, queue, payload)
     backend.save
   end
 end
